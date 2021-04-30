@@ -5,7 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.example.lovetest.R
+import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.fragment_main.tv_main
+import kotlinx.android.synthetic.main.fragment_main.tv_sub
+import kotlinx.android.synthetic.main.fragment_result.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -18,6 +24,12 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class ResultFragment : Fragment() {
+
+    var option = -1
+
+    lateinit var navController: NavController
+
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -35,8 +47,45 @@ class ResultFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        option = arguments?.getInt("index")?:-1
+
         return inflater.inflate(R.layout.fragment_result, container, false)
+
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        navController = Navigation.findNavController(view)
+
+        setResult(option)
+        btn_home.setOnClickListener{
+            navController.navigate(R.id.action_resultFragment_to_mainFragment)
+        }
+    }
+
+    private fun setResult(option: Int) {
+        when(option){
+            1 -> {
+                tv_main.text="당신은 쉽게 그만 두는 사람입니다."
+                tvSUB.text="당신은 그 사람을 쉽게 내버려 둘 수 있습니다."
+            }
+            2 -> {
+                tv_main.text="너 자신에게 집중해야 해!"
+                tvSUB.text="당신은 당신의 전남편에게 정말 집착하게 됩니다."
+            }
+            3 ->{
+                tv_main.text="좀 느긋하게 하셔야 해요."
+                tvSUB.text="무슨 일이 있어도 미친 짓은 할 수 있어."
+            }
+            4 -> {
+                tv_main.text="당신은 꽤 성숙하군요."
+                tvSUB.text="헤어짐은 쉽게 받아들일 수 있어요."
+            }
+        }
+    }
+
+
 
     companion object {
         /**
